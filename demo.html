@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Petrol Bunk Finder</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      background: linear-gradient(to right, #141e30, #243b55);
+      font-family: Arial;
+    }
+
+    .hidden { display: none; }
+
+    .login-box {
+      max-width: 350px;
+      margin: auto;
+      margin-top: 120px;
+      padding: 25px;
+      background: white;
+      border-radius: 15px;
+    }
+
+    h2 {
+      text-align: center;
+      color: white;
+    }
+
+    .card {
+      border-radius: 15px;
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- 🔹 LOGIN -->
+<div id="loginPage" class="login-box">
+  <h3 class="text-center">⛽ Login</h3>
+  <input type="text" id="user" class="form-control my-2" placeholder="Username">
+  <input type="password" id="pass" class="form-control my-2" placeholder="Password">
+  <button onclick="login()" class="btn btn-primary w-100">Login</button>
+</div>
+
+<!-- 🔹 HOME -->
+<div id="homePage" class="hidden container mt-4">
+
+  <h2>⛽ Petrol Bunks</h2>
+
+  <!-- 🔍 Search + Filter -->
+  <div class="row my-3">
+    <div class="col-md-6">
+      <input type="text" id="search" class="form-control" placeholder="Search..." onkeyup="searchBunk()">
+    </div>
+    <div class="col-md-6">
+      <select class="form-select" onchange="filterBunk(this.value)">
+        <option value="all">All</option>
+        <option value="open">Open</option>
+        <option value="closed">Closed</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row" id="list">
+
+    <!-- 1 -->
+    <div class="col-md-4 bunk open">
+      <div class="card p-3">
+        <h5>Indian Oil</h5>
+        <p>Velachery</p>
+        <p>₹102 | 6AM-10PM</p>
+        <span class="badge bg-success">Open</span><br><br>
+        <button class="btn btn-success" onclick="map()">Map</button>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="col-md-4 bunk closed">
+      <div class="card p-3">
+        <h5>Bharat Petroleum</h5>
+        <p>Tambaram</p>
+        <p>₹101 | 7AM-9PM</p>
+        <span class="badge bg-danger">Closed</span><br><br>
+        <button class="btn btn-success" onclick="map()">Map</button>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="col-md-4 bunk open">
+      <div class="card p-3">
+        <h5>HP Petrol</h5>
+        <p>Guindy</p>
+        <p>₹103 | 24hrs</p>
+        <span class="badge bg-success">Open</span><br><br>
+        <button class="btn btn-success" onclick="map()">Map</button>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="col-md-4 bunk open mt-3">
+      <div class="card p-3">
+        <h5>Shell</h5>
+        <p>OMR</p>
+        <p>₹105 | 24hrs</p>
+        <span class="badge bg-success">Open</span><br><br>
+        <button class="btn btn-success" onclick="map()">Map</button>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="col-md-4 bunk closed mt-3">
+      <div class="card p-3">
+        <h5>Reliance</h5>
+        <p>Anna Nagar</p>
+        <p>₹100 | 6AM-11PM</p>
+        <span class="badge bg-danger">Closed</span><br><br>
+        <button class="btn btn-success" onclick="map()">Map</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="text-center mt-4">
+    <button onclick="nextPage()" class="btn btn-warning">Next</button>
+  </div>
+
+</div>
+
+<!-- 🔹 GREETING -->
+<div id="greetPage" class="hidden container text-center mt-5">
+  <div class="card p-4">
+    <h2 id="msg"></h2>
+    <p>Welcome 🚗⛽</p>
+  </div>
+</div>
+
+<script>
+function login(){
+  if(user.value=="admin" && pass.value=="1234"){
+    loginPage.classList.add("hidden");
+    homePage.classList.remove("hidden");
+  } else {
+    alert("Wrong Login");
+  }
+}
+
+function map(){
+  window.open("https://www.google.com/maps");
+}
+
+// 🔍 search
+function searchBunk(){
+  let input = search.value.toLowerCase();
+  let items = document.getElementsByClassName("bunk");
+
+  for(let i=0;i<items.length;i++){
+    let text = items[i].innerText.toLowerCase();
+    items[i].style.display = text.includes(input) ? "block" : "none";
+  }
+}
+
+// 🔽 filter
+function filterBunk(type){
+  let items = document.getElementsByClassName("bunk");
+
+  for(let i=0;i<items.length;i++){
+    if(type=="all"){
+      items[i].style.display="block";
+    }
+    else if(items[i].classList.contains(type)){
+      items[i].style.display="block";
+    }
+    else{
+      items[i].style.display="none";
+    }
+  }
+}
+
+function nextPage(){
+  homePage.classList.add("hidden");
+  greetPage.classList.remove("hidden");
+
+  let t=new Date().getHours();
+  msg.innerText = t<12 ? "Good Morning" : (t<18 ? "Good Afternoon" : "Good Evening");
+}
+</script>
+
+</body>
+</html>
